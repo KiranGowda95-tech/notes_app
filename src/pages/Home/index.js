@@ -35,7 +35,7 @@ const Home = () => {
       type: "ADD_NOTE",
     });
     notesDispatch({
-      type: "CLEAR",
+      type: "CLEAR_INPUT",
     });
   };
 
@@ -69,27 +69,35 @@ const Home = () => {
               <span className="material-symbols-outlined">add</span>
             </button>
           </div>
-          <div>
+          <div className="mt-10 flex flex-wrap gap-6">
             {notes?.length > 0 &&
               notes.map(({ id, title, text }) => (
-                <div key={id}>
+                <div
+                  className="w-56 border border-neutral-800 p-2 rounded-md"
+                  key={id}
+                >
                   <div className="flex justify-between">
                     <p>{title}</p>
-                    <button>pinned/unpinned</button>
-                  </div>
-                  <div className="flex flex-col">
-                    <p>{text}</p>
                     <button>
                       <span className="material-symbols-outlined">
                         bookmark
                       </span>
                     </button>
-                    <button>
-                      <span className="material-symbols-outlined">archive</span>
-                    </button>
-                    <button>
-                      <span className="material-symbols-outlined">delete</span>
-                    </button>
+                  </div>
+                  <div className="flex flex-col">
+                    <p>{text}</p>
+                    <div className="ml-auto">
+                      <button>
+                        <span className="material-symbols-outlined">
+                          archive
+                        </span>
+                      </button>
+                      <button>
+                        <span className="material-symbols-outlined">
+                          delete
+                        </span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
