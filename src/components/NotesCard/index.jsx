@@ -1,9 +1,13 @@
 import { useNotes } from "../../context/notes-context"
-
+import { findNotesInArchive } from "../../utils/findNotesInArchive";
 
 export const NotesCard=({id,title,text,isPinned})=>{
 
-    const {notesDispatch,archive} =useNotes()
+    const {notesDispatch,archive} =useNotes();
+
+  
+
+    const isNotesInArchive=findNotesInArchive(archive,id)
 
     const onPinClick=(id)=>{
        !isPinned ? notesDispatch({
@@ -16,17 +20,17 @@ export const NotesCard=({id,title,text,isPinned})=>{
     }
 
     const onArchiveClick=(id)=>{
+      !isNotesInArchive ?
       notesDispatch({
-        type:'ARCHIVE',
+        type:'ADD_TO_ARCHIVE',
+        payload:{id}
+      }) : notesDispatch({
+        type:'REMOVE_FROM_ARCHIVE',
         payload:{id}
       })
     }
 
-    const findNotesInArchive=(archive,id)=>{
-      return archive.some(note=>note.id===id)
-    }
 
-    const isNotesInArchive=findNotesInArchive(archive,id)
 
 
     return (
@@ -36,11 +40,13 @@ export const NotesCard=({id,title,text,isPinned})=>{
                 >
                   <div className="flex justify-between border-b-2">
                     <p>{title}</p>
-                    <button onClick={()=>onPinClick(id)}>
+                    {
+                      !isNotesInArchive ? <button onClick={()=>onPinClick(id)}>
                       <span className={isPinned ? 'material-icons':'material-icons-outlined'}>
                         push_pin
                       </span>
-                    </button>
+                    </button> : <></>
+                    }
                   </div>
                   <div className="flex flex-col">
                     <p>{text}</p>
